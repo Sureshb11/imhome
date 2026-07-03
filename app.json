@@ -19,7 +19,13 @@
       "predictiveBackGestureEnabled": false
     },
     "web": {
-      "favicon": "./assets/favicon.png"
-    }
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro",
+      "output": "single",
+      "name": "I'mHome.Care — Smart Care at Home"
+    },
+    "plugins": [
+      "expo-font"
+    ]
   }
 }
