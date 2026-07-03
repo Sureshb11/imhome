@@ -39,3 +39,6 @@ yarn-error.*
 # generated native folders
 /ios
 /android
+
+# Original source design (kept locally, not tracked)
+imhome_care_website*.html
