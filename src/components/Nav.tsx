@@ -30,7 +30,7 @@ export default function Nav() {
       <View style={styles.bar}>
         <Pressable style={styles.logo} onPress={() => scrollToSection('how')}>
           <Image
-            source={require('../../assets/devices/logo.png')}
+            source={require('../../assets/imhome-logo.png')}
             style={styles.logoImg}
             resizeMode="contain"
           />
