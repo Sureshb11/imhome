@@ -31,10 +31,13 @@ export default function Nav() {
         <Pressable style={styles.logo} onPress={() => scrollToSection('how')}>
           <Image
             source={require('../../assets/imhome-logo.png')}
-            style={styles.logoImg}
+            style={[styles.logoImg, isMobile && styles.logoImgMobile]}
             resizeMode="contain"
           />
-          <Text style={styles.logoText}>
+          <Text
+            style={[styles.logoText, isMobile && styles.logoTextMobile]}
+            numberOfLines={1}
+          >
             I'm<Text style={{ color: colors.teal }}>Home</Text>
             <Text style={{ color: colors.muted, fontFamily: fonts.bodyLight }}>.</Text>
             <Text style={{ color: colors.midnight }}>Care</Text>
@@ -50,7 +53,10 @@ export default function Nav() {
         )}
 
         <View style={styles.right}>
-          <Pressable style={styles.cta} onPress={() => scrollToSection('cta')}>
+          <Pressable
+            style={[styles.cta, isMobile && styles.ctaMobile]}
+            onPress={() => scrollToSection('cta')}
+          >
             <Text style={styles.ctaText}>Get Started</Text>
           </Pressable>
           {isMobile && (
@@ -110,18 +116,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  logo: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  logo: { flexDirection: 'row', alignItems: 'center', gap: 10, flexShrink: 1, minWidth: 0 },
   logoImg: { width: 42, height: 42 },
-  logoText: { fontFamily: fonts.serif, fontSize: 23, color: colors.midnight },
+  logoImgMobile: { width: 34, height: 34 },
+  logoText: { fontFamily: fonts.serif, fontSize: 23, color: colors.midnight, flexShrink: 1 },
+  logoTextMobile: { fontSize: 19 },
   links: { flexDirection: 'row', gap: 32, alignItems: 'center' },
   linkText: { color: colors.muted, fontSize: 14, fontFamily: fonts.bodyMedium },
-  right: { flexDirection: 'row', alignItems: 'center', gap: 14 },
+  right: { flexDirection: 'row', alignItems: 'center', gap: 12, flexShrink: 0 },
   cta: {
     backgroundColor: colors.teal,
     paddingVertical: 8,
     paddingHorizontal: 20,
     borderRadius: 6,
   },
+  ctaMobile: { paddingHorizontal: 14 },
   ctaText: { color: colors.white, fontSize: 14, fontFamily: fonts.bodySemiBold },
   hamburger: { padding: 4 },
   hamburgerIcon: { fontSize: 22, color: colors.midnight },
