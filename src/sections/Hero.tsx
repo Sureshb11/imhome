@@ -51,7 +51,7 @@ export default function Hero() {
       <View style={styles.heroText}>
         <View style={styles.eyebrow}>
           <View style={styles.pulseDot} />
-          <Text style={styles.eyebrowText}>AI-Powered Remote Patient Monitoring</Text>
+          <Text style={styles.eyebrowText}>AI-Powered Continuous Patient Monitoring</Text>
         </View>
         <Text style={[styles.h1, isMobile && { fontSize: 40, lineHeight: 46 }]}>
           Expert care,{'\n'}
@@ -74,9 +74,8 @@ export default function Hero() {
         </View>
       </View>
 
-      {!isMobile && (
-        <View style={styles.heroVisual}>
-          <View style={styles.vitalsCard}>
+      <View style={[styles.heroVisual, isMobile && styles.heroVisualMobile]}>
+          <View style={[styles.vitalsCard, isMobile && styles.vitalsCardMobile]}>
             <View style={styles.vitalsHeader}>
               <Text style={styles.vitalsTitle}>Live Vitals Dashboard</Text>
               <View style={styles.liveBadge}>
@@ -110,7 +109,6 @@ export default function Hero() {
             </View>
           </View>
         </View>
-      )}
     </View>
   );
 }
@@ -204,6 +202,7 @@ const styles = StyleSheet.create({
   btnGhostText: { color: colors.midnight, fontFamily: fonts.bodyMedium, fontSize: 15 },
 
   heroVisual: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+  heroVisualMobile: { flex: 0, marginTop: 40, width: '100%' },
   vitalsCard: {
     backgroundColor: colors.white,
     borderWidth: 1,
@@ -211,8 +210,10 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 28,
     width: 340,
+    maxWidth: '100%',
     boxShadow: '0 20px 60px rgba(13,148,136,0.12), 0 4px 16px rgba(0,0,0,0.06)',
   },
+  vitalsCardMobile: { padding: 24, borderRadius: 16 },
   vitalsHeader: {
     flexDirection: 'row',
     alignItems: 'center',
