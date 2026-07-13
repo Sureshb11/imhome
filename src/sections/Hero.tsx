@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import Svg, { Polyline } from 'react-native-svg';
 import { colors, fonts } from '../theme';
@@ -7,32 +7,41 @@ import { useScrollNav } from '../ScrollContext';
 
 type Vital = { label: string; value: string; unit?: string };
 
-const STATIC_VITALS: Vital[] = [
-  { label: 'Blood Pressure', value: '118/76', unit: 'mmHg' },
-  { label: 'Steps Today', value: '6,240', unit: '/ 8,000' },
-  { label: 'Heart Rate Variability', value: '58', unit: 'ms' },
-  { label: 'Respiration Rate', value: '16', unit: 'br/min' },
-  { label: 'Posture', value: 'Upright' },
-  { label: 'Sleep Monitoring', value: '6.4h', unit: ' Deep 1.8h' },
-];
-
 const rand = (min: number, max: number, decimals = 0) =>
   (Math.random() * (max - min) + min).toFixed(decimals);
+
+const POSTURE_STATES = ['Upright', 'Seated', 'Upright', 'Standing', 'Upright'];
 
 export default function Hero() {
   const { isMobile } = useResponsive();
   const { scrollToSection } = useScrollNav();
 
-  // Live-updating vitals — mirrors the original setInterval randomizer.
+  // Live-updating vitals — mirrors the site's setInterval randomizer.
   const [hr, setHr] = useState('72');
   const [glucose, setGlucose] = useState('98');
+  const [bp, setBp] = useState('118/76');
   const [spo2, setSpo2] = useState('98.2');
+  const [steps, setSteps] = useState('6,240');
+  const [hrv, setHrv] = useState('58');
+  const [rr, setRr] = useState('16');
+  const [posture, setPosture] = useState('Upright');
+  const [sleep, setSleep] = useState('6.4h');
+  const postureIdx = useRef(0);
+  const sleepIdx = useRef(0);
 
   useEffect(() => {
     const t = setInterval(() => {
-      setHr(rand(65, 82));
-      setGlucose(rand(92, 108));
-      setSpo2(rand(97.1, 99.5, 1));
+      setHr(rand(65, 84));
+      setGlucose(rand(92, 110));
+      setBp(`${parseInt(rand(112, 128))}/${parseInt(rand(72, 82))}`);
+      setSpo2(rand(97.0, 99.6, 1));
+      setSteps(parseInt(rand(5800, 7200)).toLocaleString());
+      setHrv(rand(52, 68));
+      setRr(rand(14, 18));
+      postureIdx.current = (postureIdx.current + 1) % POSTURE_STATES.length;
+      setPosture(POSTURE_STATES[postureIdx.current]);
+      sleepIdx.current = (sleepIdx.current + 1) % 5;
+      setSleep(`6.${sleepIdx.current + 2}h`);
     }, 3000);
     return () => clearInterval(t);
   }, []);
@@ -49,6 +58,7 @@ export default function Hero() {
           <Text style={styles.h1Em}>delivered</Text>
           {'\n'}to your home.
         </Text>
+        <Text style={styles.tagline}>Continuous Care, Comfortably at Home</Text>
         <Text style={styles.heroSub}>
           Chronic illness doesn't stop at the clinic door. I'mHome.Care wraps
           hospital-grade biosensor monitoring around your daily life — and connects you
@@ -77,11 +87,13 @@ export default function Hero() {
 
             <VitalRow label="Heart Rate" value={hr} unit="bpm" />
             <VitalRow label="Blood Glucose" value={glucose} unit="mg/dL" />
-            <VitalRow label="Blood Pressure" value="118/76" unit="mmHg" />
+            <VitalRow label="Blood Pressure" value={bp} unit="mmHg" />
             <VitalRow label="SpO₂" value={spo2} unit="%" />
-            {STATIC_VITALS.slice(1).map((v) => (
-              <VitalRow key={v.label} label={v.label} value={v.value} unit={v.unit} />
-            ))}
+            <VitalRow label="Steps Today" value={steps} unit="/ 8,000" />
+            <VitalRow label="Heart Rate Variability" value={hrv} unit="ms" />
+            <VitalRow label="Respiration Rate" value={rr} unit="br/min" />
+            <VitalRow label="Posture" value={posture} />
+            <VitalRow label="Sleep Monitoring" value={sleep} unit=" Deep 1.8h" />
 
             <View style={styles.ecgLine}>
               <Text style={styles.ecgLabel}>ECG — Normal Sinus Rhythm</Text>
@@ -158,6 +170,13 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   h1Em: { color: colors.teal, fontFamily: fonts.serifItalic, fontStyle: 'italic' },
+  tagline: {
+    fontFamily: fonts.serifItalic,
+    fontStyle: 'italic',
+    fontSize: 20,
+    color: colors.tealDark,
+    marginBottom: 12,
+  },
   heroSub: {
     fontSize: 17,
     lineHeight: 29,
