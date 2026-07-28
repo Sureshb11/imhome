@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="images/Logo.png" type="image/png">
+<link rel="apple-touch-icon" href="images/Logo.png">
+<link rel="stylesheet" href="css/responsive.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Services — I'mHome.Care</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --teal: #0D9488; --teal-dark: #0F766E; --teal-light: #E6FAF8;
+    --midnight: #0F3460; --warm: #F3F8FC; --cream: #FAFCFF;
+    --text: #1C2B3A; --muted: #6B7D8E; --white: #FFFFFF; --border: #DDE8F2;
+  }
+  body { font-family: 'Inter', sans-serif; color: var(--text); background: var(--cream); line-height: 1.6; }
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(255,255,255,0.95); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border); padding: 0 5%;
+    display: flex; align-items: center; justify-content: space-between; height: 68px;
+    box-shadow: 0 1px 12px rgba(13,148,136,0.07);
+  }
+  .logo {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 1.45rem; color: var(--midnight);
+    text-decoration: none; line-height: 1;
+  }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.875rem; font-weight: 500; transition: color .2s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--teal); }
+  .nav-cta { background: var(--teal); color: #fff; padding: 0.5rem 1.25rem; border-radius: 6px; font-size: 0.875rem; font-weight: 600; text-decoration: none; }
+  .nav-cta:hover { background: var(--teal-dark); }
+  .page-hero {
+    padding: 140px 5% 70px; text-align: center;
+    background: linear-gradient(135deg, #E8F8F6 0%, #EBF5FF 55%, #F5F0FF 100%);
+    border-bottom: 1px solid var(--border);
+  }
+  .section-label { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); margin-bottom: 0.75rem; }
+  .page-hero h1 { font-family: 'DM Serif Display', serif; font-size: clamp(2rem, 4vw, 3rem); color: var(--midnight); margin-bottom: 1rem; }
+  .page-hero p { color: var(--muted); max-width: 620px; margin: 0 auto; font-size: 1.05rem; }
+  section { padding: 70px 5%; }
+  .section-title { font-family: 'DM Serif Display', serif; font-size: clamp(1.6rem, 3vw, 2.2rem); color: var(--midnight); margin-bottom: 0.75rem; }
+  .section-sub { font-size: 1rem; color: var(--muted); max-width: 560px; line-height: 1.7; }
+  .section-header { margin-bottom: 3rem; }
+  .section-header.centered { text-align: center; }
+  .section-header.centered .section-sub { margin: 0 auto; }
+  .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.25rem; }
+  .service-card {
+    background: var(--white); border: 1.5px solid var(--border); border-radius: 16px;
+    padding: 2rem 1.5rem; text-align: center; transition: all .25s; text-decoration: none; color: inherit;
+  }
+  .service-card:hover { border-color: var(--teal); box-shadow: 0 8px 30px rgba(13,148,136,0.12); transform: translateY(-3px); }
+  .service-icon { font-size: 2.5rem; margin-bottom: 1rem; display: block; }
+  .service-card h3 { font-size: 0.95rem; font-weight: 700; color: var(--midnight); margin-bottom: 0.35rem; }
+  .service-card p { font-size: 0.8rem; color: var(--muted); }
+  .service-badge { display: inline-block; margin-top: 0.75rem; font-size: 0.7rem; font-weight: 600; padding: 2px 8px; border-radius: 4px; }
+  .badge-video { background: #EFF6FF; color: #2563EB; }
+  .badge-monitor { background: #F0FDF4; color: #16A34A; }
+  .detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+  .detail-card {
+    background: var(--white); border: 1.5px solid var(--border); border-radius: 16px;
+    padding: 2rem; scroll-margin-top: 88px;
+  }
+  .detail-card h3 { font-size: 1.1rem; font-weight: 700; color: var(--midnight); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+  .detail-card p { font-size: 0.875rem; color: var(--muted); line-height: 1.7; margin-bottom: 1rem; }
+  .detail-card ul { list-style: none; }
+  .detail-card li { font-size: 0.82rem; color: var(--text); padding: 0.35rem 0; padding-left: 1.1rem; position: relative; }
+  .detail-card li::before { content: ''; position: absolute; left: 0; top: 0.7rem; width: 5px; height: 5px; border-radius: 50%; background: var(--teal); }
+  .rpm-section { background: var(--warm); }
+  .rpm-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; }
+  .rpm-item { background: var(--white); border-radius: 14px; padding: 1.75rem; border: 1.5px solid var(--border); text-align: center; }
+  .rpm-item span { font-size: 2rem; display: block; margin-bottom: 0.75rem; }
+  .rpm-item h4 { font-size: 0.95rem; color: var(--midnight); margin-bottom: 0.35rem; }
+  .rpm-item p { font-size: 0.82rem; color: var(--muted); }
+  .cta-strip { text-align: center; padding: 80px 5%; background: linear-gradient(135deg, #E8F8F6 0%, #EBF5FF 60%, #F0F9FF 100%); border-top: 1px solid var(--border); }
+  .cta-strip h2 { font-family: 'DM Serif Display', serif; font-size: clamp(1.6rem, 3vw, 2.2rem); color: var(--midnight); margin-bottom: 0.75rem; }
+  .cta-strip p { color: var(--muted); margin-bottom: 1.75rem; }
+  .btn-primary { background: var(--teal); color: #fff; text-decoration: none; padding: 0.85rem 1.75rem; border-radius: 8px; font-weight: 600; font-size: 0.95rem; display: inline-flex; }
+  .btn-primary:hover { background: var(--teal-dark); }
+  footer { background: #07101C; color: rgba(255,255,255,0.5); padding: 4rem 5% 2.5rem; }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; margin-bottom: 3rem; }
+  .footer-logo { font-family: 'DM Serif Display', serif; font-size: 1.3rem; color: #fff; margin-bottom: 0.75rem; }
+  .footer-logo span { color: var(--teal); }
+  .footer-desc { font-size: 0.85rem; line-height: 1.7; color: rgba(255,255,255,0.45); }
+  .footer-col h4 { color: #fff; font-size: 0.85rem; font-weight: 700; margin-bottom: 1rem; }
+  .footer-col ul { list-style: none; }
+  .footer-col li { margin-bottom: 0.5rem; }
+  .footer-col a { color: rgba(255,255,255,0.45); text-decoration: none; font-size: 0.85rem; }
+  .footer-col a:hover { color: var(--teal); }
+  .footer-bottom { border-top: 1px solid rgba(255,255,255,0.07); padding-top: 2rem; display: flex; justify-content: space-between; font-size: 0.8rem; color: rgba(255,255,255,0.3); flex-wrap: wrap; gap: 0.5rem; }
+  @media (max-width: 900px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
+</style>
+</head>
+<body>
+
+<nav id="site-nav">
+  <a class="logo" href="index.html">
+    <img src="images/Logo.png" alt="I'mHome.Care logo" width="42" height="42" style="object-fit:contain;display:block">
+    <span class="logo-text" style="font-family:'DM Serif Display',serif; color:var(--midnight)">I'm<span style="color:var(--teal)">Home</span><span style="color:var(--muted); font-weight:300">.</span><span style="color:var(--midnight)">Care</span></span>
+  </a>
+  <button class="nav-toggle" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-menu">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="nav-menu" id="nav-menu">
+  <ul class="nav-links">
+    <li><a href="services.html" class="active">Services</a></li>
+    <li class="nav-has-submenu">
+      <a href="devices.html" class="nav-parent">Devices <span class="nav-caret" aria-hidden="true">&#9662;</span></a>
+      <ul class="nav-submenu">
+        <li><a href="devices.html">All Devices</a></li>
+        <li><a href="devices/lifesignals-ubiqvue-2a.html">LifeSignals UbiqVue 2A</a></li>
+        <li><a href="devices/vitalconnect-vitalpatch.html">VitalPatch RTM</a></li>
+        <li><a href="devices/biointellisense-biobutton.html">BioButton</a></li>
+        <li><a href="devices/biobeat-cuffless-bp.html">Biobeat Cuffless BP</a></li>
+        <li><a href="devices/smartqare-healthdot.html">Healthdot 3.1</a></li>
+      </ul>
+    </li>
+    <li><a href="ai-monitoring.html">AI Monitoring</a></li>
+    <li><a href="doctors.html">Doctors</a></li>
+    <li><a href="activity.html">Activity</a></li>
+  </ul>
+  <a href="consultation.html" class="nav-cta">Get Started</a>
+  </div>
+</nav>
+
+<section class="page-hero">
+  <div class="section-label">Our Specialties</div>
+  <h1>Specialist care for every chronic condition</h1>
+  <p>Video consultations and continuous monitoring programs tailored to each specialty — not a generic telehealth visit.</p>
+</section>
+
+<section>
+  <div class="services-grid">
+    <a href="#diabetes" class="service-card"><span class="service-icon">🩺</span><h3>Diabetes Care</h3><p>CGM integration, walking limits, HbA1c trends, dietary coaching</p><span class="service-badge badge-monitor">Monitoring + Video</span></a>
+    <a href="#cardiac" class="service-card"><span class="service-icon">❤️</span><h3>Cardiac Monitoring</h3><p>ECG patch, BP, SpO₂, arrhythmia alerts, cardiologist consults</p><span class="service-badge badge-monitor">Continuous Monitoring</span></a>
+    <a href="#pulmonology" class="service-card"><span class="service-icon">🫁</span><h3>Pulmonology</h3><p>SpO₂ tracking, respiratory rate monitoring, COPD management</p><span class="service-badge badge-monitor">Monitoring + Video</span></a>
+    <a href="#dermatology" class="service-card"><span class="service-icon">🧴</span><h3>Dermatology</h3><p>Photo-based skin assessments, treatment plans, follow-ups</p><span class="service-badge badge-video">Video Consultation</span></a>
+    <a href="#nutrition" class="service-card"><span class="service-icon">🥗</span><h3>Nutrition</h3><p>Registered dietitians, meal plans, glucose-aware food coaching</p><span class="service-badge badge-video">Video Consultation</span></a>
+    <a href="#mental-health" class="service-card"><span class="service-icon">🧠</span><h3>Mental Health</h3><p>Psychologists, anxiety &amp; depression support, HRV-based stress insights</p><span class="service-badge badge-video">Video Consultation</span></a>
+    <a href="#orthopedics" class="service-card"><span class="service-icon">🦴</span><h3>Orthopedics</h3><p>Joint health, mobility tracking, recovery monitoring post-surgery</p><span class="service-badge badge-monitor">Monitoring + Video</span></a>
+  </div>
+</section>
+
+<section class="rpm-section" id="programs">
+  <div class="section-header centered">
+    <div class="section-label">Remote Patient Monitoring</div>
+    <h2 class="section-title">Every program includes the full care stack</h2>
+    <p class="section-sub">Whether you need continuous biosensor monitoring or specialist video visits, each service is built on the same hospital-grade platform.</p>
+  </div>
+  <div class="rpm-grid">
+    <div class="rpm-item"><span>📡</span><h4>FDA-Cleared Devices</h4><p>Clinical-grade biosensors matched to your condition</p></div>
+    <div class="rpm-item"><span>🤖</span><h4>24/7 AI Monitoring</h4><p>Real-time anomaly detection and alert routing</p></div>
+    <div class="rpm-item"><span>👩‍⚕️</span><h4>Specialist Video Visits</h4><p>Board-certified physicians licensed in NJ &amp; NY</p></div>
+    <div class="rpm-item"><span>💳</span><h4>Insurance &amp; RPM Billing</h4><p>Medicare and commercial coverage for eligible programs</p></div>
+  </div>
+</section>
+
+<section>
+  <div class="section-header centered">
+    <div class="section-label">Program Details</div>
+    <h2 class="section-title">What's included in each specialty</h2>
+  </div>
+  <div class="detail-grid">
+    <article class="detail-card" id="diabetes">
+      <h3>🩺 Diabetes Care</h3>
+      <p>Comprehensive type 1 and type 2 diabetes management with continuous glucose integration and lifestyle coaching.</p>
+      <ul><li>CGM data synced to your care dashboard</li><li>Doctor-set daily walking targets</li><li>HbA1c trend tracking and lab integration</li><li>Registered dietitian video sessions</li></ul>
+    </article>
+    <article class="detail-card" id="cardiac">
+      <h3>❤️ Cardiac Monitoring</h3>
+      <p>Continuous cardiac surveillance for hypertension, arrhythmia, and post-discharge recovery.</p>
+      <ul><li>Single-lead ECG patch with 21 arrhythmia detection</li><li>Cuffless or cuff-based BP monitoring</li><li>SpO₂ and heart rate variability tracking</li><li>Cardiologist video consultations</li></ul>
+    </article>
+    <article class="detail-card" id="pulmonology">
+      <h3>🫁 Pulmonology</h3>
+      <p>Respiratory monitoring for COPD, asthma, and post-COVID lung recovery patients.</p>
+      <ul><li>Continuous SpO₂ and respiratory rate</li><li>Activity and sleep correlation analysis</li><li>Exacerbation early-warning alerts</li><li>Pulmonologist video follow-ups</li></ul>
+    </article>
+    <article class="detail-card" id="dermatology">
+      <h3>🧴 Dermatology</h3>
+      <p>Remote skin assessments without leaving home — ideal for chronic conditions and post-treatment follow-up.</p>
+      <ul><li>Secure photo upload and dermatologist review</li><li>Treatment plan adjustments via video</li><li>Medication adherence tracking</li><li>Scheduled follow-up consultations</li></ul>
+    </article>
+    <article class="detail-card" id="nutrition">
+      <h3>🥗 Nutrition</h3>
+      <p>Personalized nutrition coaching integrated with your biosensor and glucose data.</p>
+      <ul><li>Registered dietitian video sessions</li><li>Glucose-aware meal planning</li><li>Macro and calorie goal tracking</li><li>Progress reports shared with your physician</li></ul>
+    </article>
+    <article class="detail-card" id="mental-health">
+      <h3>🧠 Mental Health</h3>
+      <p>Behavioral health support with physiological stress insights from HRV and sleep data.</p>
+      <ul><li>Licensed psychologist video therapy</li><li>HRV-based stress and recovery scoring</li><li>Sleep quality correlation with mood</li><li>Confidential, HIPAA-compliant sessions</li></ul>
+    </article>
+    <article class="detail-card" id="orthopedics">
+      <h3>🦴 Orthopedics</h3>
+      <p>Post-surgical and chronic joint recovery with mobility and activity monitoring.</p>
+      <ul><li>Daily step and mobility tracking</li><li>Posture and movement analysis</li><li>Recovery milestone reporting to surgeon</li><li>Physical therapy coordination via video</li></ul>
+    </article>
+  </div>
+</section>
+
+<section class="cta-strip">
+  <h2>Find the right program for you</h2>
+  <p>Book a free consultation and our care team will match you with the right specialist and monitoring plan.</p>
+  <a href="consultation.html" class="btn-primary">Book a Free Consultation</a>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-logo">I'm<span>Home</span>.Care</div>
+      <p class="footer-desc">Hospital-grade remote patient monitoring and specialist video consultations — delivered to your home.</p>
+    </div>
+    <div class="footer-col"><h4>Specialties</h4><ul>
+      <li><a href="#diabetes">Diabetes Care</a></li><li><a href="#cardiac">Cardiac Monitoring</a></li><li><a href="#pulmonology">Pulmonology</a></li>
+    </ul></div>
+    <div class="footer-col"><h4>Platform</h4><ul>
+      <li><a href="devices.html">Devices</a></li><li><a href="ai-monitoring.html">AI Monitoring</a></li><li><a href="consultation.html">Book Consultation</a></li>
+    </ul></div>
+    <div class="footer-col"><h4>Company</h4><ul>
+      <li><a href="index.html">Home</a></li><li><a href="consultation.html">Contact</a></li>
+    </ul></div>
+  </div>
+  <div class="footer-bottom"><span>© 2025 I'mHome.Care LLC — imhome.care</span><span>East Brunswick, NJ</span></div>
+</footer>
+<script src="js/nav.js"></script>
+</body>
+</html>

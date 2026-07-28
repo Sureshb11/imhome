@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="images/Logo.png" type="image/png">
+<link rel="apple-touch-icon" href="images/Logo.png">
+<link rel="stylesheet" href="css/responsive.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Monitoring — I'mHome.Care</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --teal:       #0D9488;
+    --teal-dark:  #0F766E;
+    --teal-light: #E6FAF8;
+    --midnight:   #0F3460;
+    --warm:       #F3F8FC;
+    --cream:      #FAFCFF;
+    --amber:      #F59E0B;
+    --text:       #1C2B3A;
+    --muted:      #6B7D8E;
+    --white:      #FFFFFF;
+    --border:     #DDE8F2;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    color: var(--text);
+    background: var(--cream);
+    line-height: 1.6;
+  }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 5%;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 68px;
+    box-shadow: 0 1px 12px rgba(13,148,136,0.07);
+  }
+  .logo {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 1.45rem; color: var(--midnight);
+    text-decoration: none; line-height: 1;
+  }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    color: var(--muted); text-decoration: none;
+    font-size: 0.875rem; font-weight: 500; transition: color .2s;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--teal); }
+  .nav-cta {
+    background: var(--teal); color: #fff;
+    padding: 0.5rem 1.25rem; border-radius: 6px;
+    font-size: 0.875rem; font-weight: 600;
+    text-decoration: none; transition: background .2s;
+  }
+  .nav-cta:hover { background: var(--teal-dark); }
+
+  .page-hero {
+    padding: 140px 5% 70px;
+    background: linear-gradient(135deg, #E8F8F6 0%, #EBF5FF 55%, #F5F0FF 100%);
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-label {
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--teal); margin-bottom: 0.75rem;
+  }
+  .page-hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    color: var(--midnight); margin-bottom: 1rem; line-height: 1.15;
+  }
+  .page-hero p {
+    color: var(--muted); max-width: 640px; margin: 0 auto;
+    font-size: 1.05rem; line-height: 1.7;
+  }
+
+  section { padding: 70px 5%; }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    color: var(--midnight); margin-bottom: 0.75rem; line-height: 1.2;
+  }
+  .section-sub {
+    font-size: 1rem; color: var(--muted); max-width: 560px; line-height: 1.7;
+  }
+  .section-header { margin-bottom: 3rem; }
+  .section-header.centered { text-align: center; }
+  .section-header.centered .section-sub { margin: 0 auto; }
+
+  .monitor-layout {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 4rem; align-items: center;
+  }
+  .monitor-features { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 2rem; }
+  .mf-item { display: flex; gap: 1.25rem; align-items: flex-start; }
+  .mf-icon {
+    width: 48px; height: 48px; border-radius: 12px; flex-shrink: 0;
+    background: var(--teal-light); display: flex; align-items: center; justify-content: center;
+    font-size: 1.25rem;
+  }
+  .mf-item h4 { font-size: 0.95rem; font-weight: 700; color: var(--midnight); margin-bottom: 0.25rem; }
+  .mf-item p { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+
+  .monitor-dashboard {
+    background: var(--white); border-radius: 20px;
+    padding: 2rem; box-shadow: 0 8px 40px rgba(13,148,136,0.1), 0 2px 8px rgba(0,0,0,0.05);
+    border: 1.5px solid var(--border);
+  }
+  .dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+  .dash-title { color: var(--midnight); font-weight: 700; font-size: 0.9rem; }
+  .dash-live { font-size: 0.7rem; color: #059669; font-weight: 700; display: flex; align-items: center; gap: 4px; }
+  .pulse-dot {
+    width: 7px; height: 7px; border-radius: 50%; background: var(--teal);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(1.4); }
+  }
+  .alert-box {
+    background: #FFFBEB; border: 1px solid rgba(245,158,11,0.3);
+    border-left: 3px solid var(--amber); border-radius: 8px; padding: 0.85rem 1rem;
+    margin-bottom: 1rem;
+  }
+  .alert-label { font-size: 0.68rem; color: #B45309; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
+  .alert-text { font-size: 0.82rem; color: var(--text); margin-top: 2px; }
+  .clear-box {
+    background: #F0FDF4; border: 1px solid rgba(16,185,129,0.2);
+    border-left: 3px solid #10B981; border-radius: 8px; padding: 0.85rem 1rem; margin-bottom: 1rem;
+  }
+  .clear-label { font-size: 0.68rem; color: #059669; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
+  .vitals-mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 1rem; }
+  .vmg-item { background: var(--warm); border-radius: 10px; padding: 0.85rem; border: 1px solid var(--border); }
+  .vmg-label { font-size: 0.68rem; color: var(--muted); margin-bottom: 0.25rem; }
+  .vmg-value { font-family: 'JetBrains Mono', monospace; font-size: 1.15rem; color: var(--teal-dark); font-weight: 500; }
+  .vmg-unit { font-size: 0.65rem; color: var(--muted); }
+  .team-row { display: flex; align-items: center; gap: 0.5rem; margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--border); }
+  .team-avatars { display: flex; }
+  .team-avatar {
+    width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--white);
+    background: var(--teal); display: flex; align-items: center; justify-content: center;
+    font-size: 0.7rem; font-weight: 700; color: #fff; margin-left: -8px;
+  }
+  .team-avatar:first-child { margin-left: 0; }
+  .team-label { font-size: 0.78rem; color: var(--muted); margin-left: 0.5rem; }
+
+  .pipeline { background: var(--warm); }
+  .pipeline-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;
+  }
+  .pipe-step {
+    background: var(--white); border: 1.5px solid var(--border);
+    border-radius: 16px; padding: 2rem 1.5rem; text-align: center;
+    position: relative;
+  }
+  .pipe-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2rem; color: var(--teal); opacity: 0.4; margin-bottom: 0.5rem;
+  }
+  .pipe-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+  .pipe-step h3 { font-size: 0.95rem; font-weight: 700; color: var(--midnight); margin-bottom: 0.4rem; }
+  .pipe-step p { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+
+  .escalation-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem;
+  }
+  .esc-card {
+    border: 1.5px solid var(--border); border-radius: 16px; padding: 1.75rem;
+    background: var(--white);
+  }
+  .esc-level {
+    display: inline-block; font-size: 0.68rem; font-weight: 700;
+    letter-spacing: .06em; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 6px; margin-bottom: 0.75rem;
+  }
+  .esc-l1 { background: #EFF6FF; color: #2563EB; }
+  .esc-l2 { background: #FFFBEB; color: #B45309; }
+  .esc-l3 { background: #FEF2F2; color: #DC2626; }
+  .esc-card h3 { font-size: 1rem; font-weight: 700; color: var(--midnight); margin-bottom: 0.4rem; }
+  .esc-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+
+  .vitals-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1rem;
+  }
+  .vital-chip {
+    background: var(--white); border: 1.5px solid var(--border);
+    border-radius: 12px; padding: 1.25rem; text-align: center;
+  }
+  .vital-chip-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+  .vital-chip h4 { font-size: 0.85rem; font-weight: 600; color: var(--midnight); }
+
+  .flow-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
+  .flow-card {
+    border: 1.5px solid var(--border); border-radius: 16px; padding: 2rem;
+    background: var(--white); transition: border-color .2s;
+  }
+  .flow-card:hover { border-color: var(--teal); }
+  .flow-card-icon { font-size: 2rem; margin-bottom: 1rem; }
+  .flow-card h3 { font-size: 1rem; font-weight: 700; color: var(--midnight); margin-bottom: 0.5rem; }
+  .flow-card p { font-size: 0.875rem; color: var(--muted); line-height: 1.7; }
+  .flow-highlight {
+    margin-top: 0.85rem; padding: 0.65rem 0.85rem;
+    background: var(--teal-light); border-radius: 7px;
+    font-size: 0.8rem; color: var(--teal-dark); font-weight: 600;
+  }
+
+  .stats-bar {
+    background: var(--midnight); color: #fff;
+    padding: 60px 5%;
+  }
+  .stats-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 2rem; text-align: center;
+  }
+  .stat-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 2.2rem; font-weight: 500; color: #5EEAD4;
+  }
+  .stat-desc { font-size: 0.85rem; color: rgba(255,255,255,0.55); margin-top: 0.35rem; }
+
+  .cta-strip {
+    text-align: center; padding: 80px 5%;
+    background: linear-gradient(135deg, #E8F8F6 0%, #EBF5FF 60%, #F0F9FF 100%);
+    border-top: 1px solid var(--border);
+  }
+  .cta-strip h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    color: var(--midnight); margin-bottom: 0.75rem;
+  }
+  .cta-strip p { color: var(--muted); margin-bottom: 1.75rem; }
+  .btn-primary {
+    background: var(--teal); color: #fff; text-decoration: none;
+    padding: 0.85rem 1.75rem; border-radius: 8px; font-weight: 600;
+    font-size: 0.95rem; display: inline-flex; align-items: center; gap: 8px;
+    transition: background .2s;
+  }
+  .btn-primary:hover { background: var(--teal-dark); }
+  .btn-ghost {
+    border: 1.5px solid var(--border); color: var(--midnight);
+    text-decoration: none; padding: 0.85rem 1.75rem; border-radius: 8px;
+    font-weight: 500; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 8px;
+    background: var(--white); margin-left: 0.75rem; transition: all .2s;
+  }
+  .btn-ghost:hover { border-color: var(--teal); color: var(--teal); }
+
+  footer {
+    background: #07101C; color: rgba(255,255,255,0.5);
+    padding: 4rem 5% 2.5rem;
+  }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; margin-bottom: 3rem; }
+  .footer-logo { font-family: 'DM Serif Display', serif; font-size: 1.3rem; color: #fff; margin-bottom: 0.75rem; }
+  .footer-logo span { color: var(--teal); }
+  .footer-desc { font-size: 0.85rem; line-height: 1.7; color: rgba(255,255,255,0.45); }
+  .footer-col h4 { color: #fff; font-size: 0.85rem; font-weight: 700; margin-bottom: 1rem; }
+  .footer-col ul { list-style: none; }
+  .footer-col li { margin-bottom: 0.5rem; }
+  .footer-col a { color: rgba(255,255,255,0.45); text-decoration: none; font-size: 0.85rem; transition: color .2s; }
+  .footer-col a:hover { color: var(--teal); }
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.07); padding-top: 2rem;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.8rem; color: rgba(255,255,255,0.3); flex-wrap: wrap; gap: 0.5rem;
+  }
+
+  @media (max-width: 900px) {
+    .monitor-layout { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .btn-ghost { margin-left: 0; margin-top: 0.75rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="site-nav">
+  <a class="logo" href="index.html">
+    <img src="images/Logo.png" alt="I'mHome.Care logo" width="42" height="42" style="object-fit:contain;display:block">
+    <span class="logo-text" style="font-family:'DM Serif Display',serif; color:var(--midnight)">I'm<span style="color:var(--teal)">Home</span><span style="color:var(--muted); font-weight:300">.</span><span style="color:var(--midnight)">Care</span></span>
+  </a>
+  <button class="nav-toggle" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-menu">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="nav-menu" id="nav-menu">
+  <ul class="nav-links">
+    <li><a href="services.html">Services</a></li>
+    <li class="nav-has-submenu">
+      <a href="devices.html" class="nav-parent">Devices <span class="nav-caret" aria-hidden="true">&#9662;</span></a>
+      <ul class="nav-submenu">
+        <li><a href="devices.html">All Devices</a></li>
+        <li><a href="devices/lifesignals-ubiqvue-2a.html">LifeSignals UbiqVue 2A</a></li>
+        <li><a href="devices/vitalconnect-vitalpatch.html">VitalPatch RTM</a></li>
+        <li><a href="devices/biointellisense-biobutton.html">BioButton</a></li>
+        <li><a href="devices/biobeat-cuffless-bp.html">Biobeat Cuffless BP</a></li>
+        <li><a href="devices/smartqare-healthdot.html">Healthdot 3.1</a></li>
+      </ul>
+    </li>
+    <li><a href="ai-monitoring.html" class="active">AI Monitoring</a></li>
+    <li><a href="doctors.html">Doctors</a></li>
+    <li><a href="activity.html">Activity</a></li>
+  </ul>
+  <a href="consultation.html" class="nav-cta">Get Started</a>
+  </div>
+</nav>
+
+<section class="page-hero">
+  <div class="section-label">AI + Human Intelligence</div>
+  <h1>We never stop watching your vitals.</h1>
+  <p>An always-on AI engine processes your biosensor stream around the clock. Our clinical team acts on every alert — so you stay safe without lifting a finger.</p>
+</section>
+
+<section id="overview">
+  <div class="monitor-layout">
+    <div>
+      <h2 class="section-title">Hospital-grade monitoring, at home</h2>
+      <p class="section-sub">Every heartbeat, breath, and blood pressure reading flows through our AI engine in real time. When something looks off, the right person is notified — instantly.</p>
+      <div class="monitor-features">
+        <div class="mf-item">
+          <div class="mf-icon">⚡</div>
+          <div>
+            <h4>Real-Time Anomaly Detection</h4>
+            <p>AI flags abnormal ECG rhythms, BP spikes, glucose crashes, and SpO₂ drops within seconds of occurrence — not hours later.</p>
+          </div>
+        </div>
+        <div class="mf-item">
+          <div class="mf-icon">🔔</div>
+          <div>
+            <h4>Multi-Layer Alert Routing</h4>
+            <p>Alerts escalate from app notification → clinical team call → emergency services, based on severity and your pre-set preferences.</p>
+          </div>
+        </div>
+        <div class="mf-item">
+          <div class="mf-icon">👥</div>
+          <div>
+            <h4>Dedicated Care Team</h4>
+            <p>Registered nurses and care coordinators review your data every shift. AI is the first responder; our human team is always the final word.</p>
+          </div>
+        </div>
+        <div class="mf-item">
+          <div class="mf-icon">📋</div>
+          <div>
+            <h4>Pre-Consultation Report</h4>
+            <p>A structured PDF report — trending vitals, sleep data, activity patterns, anomalies — is sent to your doctor 30 minutes before every consult.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="monitor-dashboard">
+      <div class="dash-header">
+        <div class="dash-title">Clinical Alert Center</div>
+        <div class="dash-live"><div class="pulse-dot"></div> Active</div>
+      </div>
+      <div class="alert-box">
+        <div class="alert-label">⚠️ Advisory Alert — 2:14 PM</div>
+        <div class="alert-text">Patient #A-2247: BP 148/92 — above set threshold. Clinical team notified. Video check-in scheduled.</div>
+      </div>
+      <div class="clear-box">
+        <div class="clear-label">✓ All Clear — 1:58 PM</div>
+        <div style="font-size:.82rem; color:var(--text); margin-top:2px">Patient #A-2241: ECG rhythm normalized. No action required.</div>
+      </div>
+      <div class="vitals-mini-grid">
+        <div class="vmg-item">
+          <div class="vmg-label">Patients Active</div>
+          <div class="vmg-value">47<span class="vmg-unit"> live</span></div>
+        </div>
+        <div class="vmg-item">
+          <div class="vmg-label">Alerts Today</div>
+          <div class="vmg-value">3<span class="vmg-unit"> flagged</span></div>
+        </div>
+        <div class="vmg-item">
+          <div class="vmg-label">Avg Response</div>
+          <div class="vmg-value">38<span class="vmg-unit">sec</span></div>
+        </div>
+        <div class="vmg-item">
+          <div class="vmg-label">Consults Today</div>
+          <div class="vmg-value">12<span class="vmg-unit"> done</span></div>
+        </div>
+      </div>
+      <div class="team-row">
+        <div class="team-avatars">
+          <div class="team-avatar">RN</div>
+          <div class="team-avatar" style="background:#0F766E">AI</div>
+          <div class="team-avatar" style="background:#1D4ED8">MD</div>
+          <div class="team-avatar" style="background:#7C3AED">+4</div>
+        </div>
+        <div class="team-label">8 care team members on shift now</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pipeline" id="how-it-works">
+  <div class="section-header centered">
+    <div class="section-label">How It Works</div>
+    <h2 class="section-title">From biosensor to action in seconds</h2>
+    <p class="section-sub">A continuous loop of data collection, AI analysis, human review, and clinical response — running 24/7 while you live your life.</p>
+  </div>
+  <div class="pipeline-grid">
+    <div class="pipe-step">
+      <div class="pipe-num">01</div>
+      <div class="pipe-icon">📡</div>
+      <h3>Continuous Data Capture</h3>
+      <p>Your FDA-cleared biosensor streams ECG, BP, SpO₂, respiration, and activity data to our secure cloud platform.</p>
+    </div>
+    <div class="pipe-step">
+      <div class="pipe-num">02</div>
+      <div class="pipe-icon">🤖</div>
+      <h3>AI Pattern Analysis</h3>
+      <p>Machine learning models compare your readings against personal baselines and clinical thresholds in real time.</p>
+    </div>
+    <div class="pipe-step">
+      <div class="pipe-num">03</div>
+      <div class="pipe-icon">🔔</div>
+      <h3>Smart Alert Routing</h3>
+      <p>Abnormal events trigger tiered alerts — from gentle app reminders to immediate clinical team intervention.</p>
+    </div>
+    <div class="pipe-step">
+      <div class="pipe-num">04</div>
+      <div class="pipe-icon">👩‍⚕️</div>
+      <h3>Clinical Team Response</h3>
+      <p>Registered nurses review flagged data, contact you if needed, and coordinate with your physician.</p>
+    </div>
+    <div class="pipe-step">
+      <div class="pipe-num">05</div>
+      <div class="pipe-icon">📊</div>
+      <h3>Doctor Report Delivery</h3>
+      <p>Trending vitals, anomaly logs, and activity summaries reach your doctor before every video consultation.</p>
+    </div>
+  </div>
+</section>
+
+<section id="escalation">
+  <div class="section-header centered">
+    <div class="section-label">Alert Escalation</div>
+    <h2 class="section-title">The right response for every situation</h2>
+    <p class="section-sub">Not every alert is an emergency. Our tiered system ensures you get the appropriate level of care — never too little, never too much.</p>
+  </div>
+  <div class="escalation-grid">
+    <div class="esc-card">
+      <span class="esc-level esc-l1">Level 1 — Informational</span>
+      <h3>App Notification</h3>
+      <p>Mild deviations from baseline — slightly elevated resting heart rate, missed step goal, or minor sleep disruption. Logged for your doctor's review.</p>
+    </div>
+    <div class="esc-card">
+      <span class="esc-level esc-l2">Level 2 — Advisory</span>
+      <h3>Clinical Team Contact</h3>
+      <p>BP above threshold, irregular ECG pattern, or sustained SpO₂ dip. A registered nurse calls you within minutes to assess and advise.</p>
+    </div>
+    <div class="esc-card">
+      <span class="esc-level esc-l3">Level 3 — Urgent</span>
+      <h3>Emergency Protocol</h3>
+      <p>Critical vitals or patient-initiated SOS. Immediate clinical team response, physician notification, and emergency services coordination if needed.</p>
+    </div>
+  </div>
+</section>
+
+<section style="background:var(--warm)" id="vitals">
+  <div class="section-header centered">
+    <div class="section-label">What We Monitor</div>
+    <h2 class="section-title">Every signal that matters</h2>
+    <p class="section-sub">Depending on your biosensor and condition, our AI engine tracks a comprehensive set of clinical parameters.</p>
+  </div>
+  <div class="vitals-grid">
+    <div class="vital-chip"><div class="vital-chip-icon">💓</div><h4>ECG &amp; Heart Rate</h4></div>
+    <div class="vital-chip"><div class="vital-chip-icon">🩸</div><h4>Blood Pressure</h4></div>
+    <div class="vital-chip"><div class="vital-chip-icon">🫁</div><h4>SpO₂ &amp; Respiration</h4></div>
+    <div class="vital-chip"><div class="vital-chip-icon">📈</div><h4>Heart Rate Variability</h4></div>
+    <div class="vital-chip"><div class="vital-chip-icon">🌡️</div><h4>Skin Temperature</h4></div>
+    <div class="vital-chip"><div class="vital-chip-icon">🚶</div><h4>Activity &amp; Steps</h4></div>
+    <div class="vital-chip"><div class="vital-chip-icon">🌙</div><h4>Sleep Patterns</h4></div>
+    <div class="vital-chip"><div class="vital-chip-icon">🧍</div><h4>Posture &amp; Motion</h4></div>
+  </div>
+</section>
+
+<section id="doctor-data">
+  <div class="section-header centered">
+    <div class="section-label">Doctor Collaboration</div>
+    <h2 class="section-title">AI insights that empower your physician</h2>
+    <p class="section-sub">Monitoring data doesn't sit in a dashboard — it flows directly into your doctor's workflow before every consultation.</p>
+  </div>
+  <div class="flow-grid">
+    <div class="flow-card">
+      <div class="flow-card-icon">📊</div>
+      <h3>Pre-Consultation Data Report</h3>
+      <p>Biosensor trends, anomaly logs, sleep data, step counts, and medication adherence notes land in your doctor's hands 30 minutes before your video call.</p>
+      <div class="flow-highlight">No more "so how have you been feeling?" — your data shows them.</div>
+    </div>
+    <div class="flow-card">
+      <div class="flow-card-icon">🚶</div>
+      <h3>Doctor-Set Walking Limits</h3>
+      <p>Physicians prescribe precise daily step targets. Our platform enforces limits, sends reminders, and tracks compliance — reported back in real time.</p>
+      <div class="flow-highlight">Daily step goal set by Dr. Sharma: 7,500 steps — 6,240 today ✓</div>
+    </div>
+    <div class="flow-card">
+      <div class="flow-card-icon">🌙</div>
+      <h3>Sleep &amp; Activity Patterns</h3>
+      <p>Deep sleep stages, REM cycles, apnea events, walking cadence, and inactivity periods give your doctor a complete real-world picture of your recovery.</p>
+      <div class="flow-highlight">Last 7 nights: avg 6.4h sleep · 3-day sedentary streak detected.</div>
+    </div>
+    <div class="flow-card">
+      <div class="flow-card-icon">🔬</div>
+      <h3>Lab Results Integration</h3>
+      <p>Upload lab results directly. HbA1c, lipids, and other markers are appended to your pre-consultation report alongside biosensor data.</p>
+      <div class="flow-highlight">HbA1c 7.1% — shared with Dr. Anand before Tuesday's consult.</div>
+    </div>
+  </div>
+</section>
+
+<div class="stats-bar">
+  <div class="stats-grid">
+    <div>
+      <div class="stat-num">&lt;38s</div>
+      <div class="stat-desc">Average alert response time</div>
+    </div>
+    <div>
+      <div class="stat-num">24/7</div>
+      <div class="stat-desc">Continuous AI + clinical monitoring</div>
+    </div>
+    <div>
+      <div class="stat-num">100%</div>
+      <div class="stat-desc">Alerts reviewed by care team</div>
+    </div>
+    <div>
+      <div class="stat-num">HIPAA</div>
+      <div class="stat-desc">Compliant data handling</div>
+    </div>
+  </div>
+</div>
+
+<section class="cta-strip">
+  <h2>Ready for always-on care?</h2>
+  <p>Pair AI monitoring with a clinical-grade biosensor and connect to a specialist who sees the full picture.</p>
+  <div>
+    <a href="consultation.html" class="btn-primary">Book a Free Consultation</a>
+    <a href="devices.html" class="btn-ghost">View Devices</a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-logo">I'm<span>Home</span>.Care</div>
+      <p class="footer-desc">
+        Hospital-grade remote patient monitoring and specialist video consultations — delivered to your home. Serving patients across New Jersey and New York.
+      </p>
+    </div>
+    <div class="footer-col">
+      <h4>Platform</h4>
+      <ul>
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#escalation">Alert Escalation</a></li>
+        <li><a href="#vitals">What We Monitor</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Devices</h4>
+      <ul>
+        <li><a href="devices.html">All Devices</a></li>
+        <li><a href="devices/lifesignals-ubiqvue-2a.html">LifeSignals UbiqVue 2A</a></li>
+        <li><a href="devices/vitalconnect-vitalpatch.html">VitalPatch RTM</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="consultation.html">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 I'mHome.Care LLC — imhome.care — East Brunswick, NJ</span>
+    <span>A division of I'mHome.Care LLC (Delaware) · Powered by NALAM Healthcare IT</span>
+  </div>
+</footer>
+
+<script src="js/nav.js"></script>
+</body>
+</html>
